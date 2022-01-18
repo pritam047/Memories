@@ -1,5 +1,6 @@
 import PostMessage from '../models/postMessages.js'
 
+// GET Posts
 export const getPosts = async(req, res) =>{
     try {
         const postMessages = await PostMessage.find();
@@ -10,6 +11,7 @@ export const getPosts = async(req, res) =>{
     }
 }
 
+// CREATE Posts
 export const createPost = async(req, res) =>{
     const { title, message, selectedFile, creator, tags } = req.body;
 
