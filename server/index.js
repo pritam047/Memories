@@ -2,7 +2,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import 'dotenv/config';
 
+// require("dotenv").config();
 import postRoutes from './routes/posts.js';
 const app = express();
 
@@ -12,7 +14,7 @@ app.use(cors());
 
 app.use('/posts', postRoutes);
 
-const CONNECTION_URL = 'mongodb+srv://pritam047:qwerty123@cluster0.ati2f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const CONNECTION_URL = process.env.DB_URL;
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(
