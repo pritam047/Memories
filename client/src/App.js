@@ -9,7 +9,7 @@ import Form from './components/Forms/Forms';
 import useStyles from './styles';
 import memories from './images/memories.png';
 const App = () => {
-    const [currentId, setCurrentId] = useState(null);
+    const [currentId, setCurrentId] = useState(0);
     const classes = useStyles();
     const dispatch = useDispatch();
 
