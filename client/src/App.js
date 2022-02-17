@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container } from '@material-ui/core';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Navbar from './components/Navbar/Navbar';
 import Home from './components/Home/Home';
@@ -9,14 +9,14 @@ import Auth from './components/Auth/Auth';
 const App = () => {
 
     return (
+        // https://reactrouter.com/docs/en/v6/upgrading/v5#upgrade-to-react-router-v6
         <BrowserRouter>
             <Container maxWidth="lg">
                 <Navbar />
-                <Switch>
-                    <Route path="/" exact component={Home} />
-                    <Route path="/auth" exact component={Auth} />
-                </Switch>
-                <Home />
+                <Routes>
+                    <Route path="/" element={<Home/>} />
+                    <Route path="/auth" element={<Auth/>} />
+                </Routes>
             </Container>
         </BrowserRouter>
     )
