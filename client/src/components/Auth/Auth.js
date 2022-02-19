@@ -3,20 +3,26 @@ import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { GoogleLogin } from 'react-google-login';
 import {useDispatch} from 'react-redux';
-import {useNavigate} from 'react-router-dom'
-import Input from './Input';
+import {useNavigate} from 'react-router-dom';
+
 import Icon from './Icon';
 import useStyles from './styles';
+import Input from './Input';
 
+import { signin, signup } from '../../actions/auth';
 import {AUTH} from '../../constants/actionTypes';
 
+const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
+
 const Auth = () => {
+
   const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [form, setForm] = useState(initialState);
 
   const handleShowPassword = () => setShowPassword(!showPassword);
 
@@ -25,11 +31,17 @@ const Auth = () => {
     setShowPassword(false);
   }
 
-  const handleChange = () => {
+  const handleChange = (e) => 
+  setForm({ ...form, [e.target.name]: e.target.value });
 
-  }
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    if (isSignup) {
+      dispatch(signup(form, navigate));
+    } else {
+      dispatch(signin(form, navigate));
+    }
   }
   const googleSuccess = async (res) => {
     const result = res?.profileObj;    // get properties like firstname, lastname, email, etc. pf user
