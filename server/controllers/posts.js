@@ -14,9 +14,9 @@ export const getPosts = async(req, res) =>{
 
 // CREATE Posts
 export const createPost = async(req, res) =>{
-    const { title, message, selectedFile, creator, tags } = req.body;
-
-    const newPostMessage = new PostMessage({ title, message, selectedFile, creator, tags })
+    const post = req.body;
+    // create a new post with the user inputs and the current user logged in details
+    const newPostMessage = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() })
 
     try {
         await newPostMessage.save();
