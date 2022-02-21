@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import PostMessage from '../models/postMessages.js'
 
 // GET Posts
@@ -13,9 +14,9 @@ export const getPosts = async(req, res) =>{
 
 // CREATE Posts
 export const createPost = async(req, res) =>{
-    const { title, message, selectedFile, creator, tags } = req.body;
-
-    const newPostMessage = new PostMessage({ title, message, selectedFile, creator, tags })
+    const post = req.body;
+    // create a new post with the user inputs and the current user logged in details
+    const newPostMessage = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() })
 
     try {
         await newPostMessage.save();
@@ -24,3 +25,50 @@ export const createPost = async(req, res) =>{
         res.status(409).json({ message: error.message });
     }
 }
+
+// UPDATE a single Post
+export const updatePost = async(req, res) =>{
+    const { id } = req.params; // get id of post to update
+    const { title, message, creator, selectedFile, tags } = req.body;  // get all field values to update
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`); // check if valid id exists
+
+    const updatedPost = { creator, title, message, tags, selectedFile, _id: id };
+
+    await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true });
+
+    res.json(updatedPost);
+}
+
+// DELETE a single Post
+export const deletePost = async(req, res) =>{
+    const { id } = req.params; // get id of post to update
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`); // check if valid id exists
+
+    await PostMessage.findByIdAndRemove(id);
+
+    res.json({'message': 'Post deleted successfully'});
+}
+
+export const likePost = async(req,res) => {
+    const {id} = req.params;
+    
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated" });
+      }
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`); // check if valid id exists
+
+    const post = await PostMessage.findById(id);
+    const index = post.likes.findIndex((id) => id ===String(req.userId));
+
+    if (index === -1) {
+      post.likes.push(req.userId);  // like the post
+    } else {
+      post.likes = post.likes.filter((id) => id !== String(req.userId)); // else, dislike the post
+    }
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {new: true});
+
+    res.json(updatedPost);
+}
+
