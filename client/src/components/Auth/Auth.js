@@ -3,7 +3,7 @@ import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { GoogleLogin } from 'react-google-login';
 import {useDispatch} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, Navigate} from 'react-router-dom';
 
 import Icon from './Icon';
 import useStyles from './styles';
@@ -15,14 +15,21 @@ import {AUTH} from '../../constants/actionTypes';
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
 
 const Auth = () => {
-
+  
+  
+    
   const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  
+
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState(initialState);
+
+  const user = JSON.parse(localStorage.getItem('profile'))
+  if(user) return <Navigate to='/' replace/>;
 
   const handleShowPassword = () => setShowPassword(!showPassword);
 
