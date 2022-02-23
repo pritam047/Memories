@@ -35,9 +35,9 @@ export const updatePost = async(req, res) =>{
 
     const updatedPost = { creator, title, message, tags, selectedFile, _id: id };
 
-    await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true });
+    const editedPost = await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true });
 
-    res.json(updatedPost);
+    res.json(editedPost);
 }
 
 // DELETE a single Post
