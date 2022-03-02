@@ -11,7 +11,8 @@ const Form = ({currentId, setCurrentId}) => {
 
     const [postData, setPostData] = useState({ title: '', message: '', tags: '', selectedFile: '' });
     const post = useSelector((state) => currentId ? state.posts.find((p) => p._id === currentId) : null);
-    
+    const author = useSelector((state) => state.auth) 
+
     const classes = useStyles();
     const dispatch = useDispatch();
     
@@ -37,7 +38,7 @@ const Form = ({currentId, setCurrentId}) => {
     }
     const hasFormValues = postData.title || postData.message || postData.tags || postData.selectedFile ? true : false;
     const isEnabled = (postData.title && postData.message) ? true:false;
-    if (!user?.result?.name) {
+    if (!author.loggedIn) {
         return (
           <Paper className={classes.paper}>
             <Typography variant="h6" align="center">
@@ -46,7 +47,7 @@ const Form = ({currentId, setCurrentId}) => {
           </Paper>
         );
       }
-      
+    else{  
     return (
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
@@ -74,6 +75,7 @@ const Form = ({currentId, setCurrentId}) => {
             </form>
         </Paper>
     )
+    }
 }
 
 export default Form;

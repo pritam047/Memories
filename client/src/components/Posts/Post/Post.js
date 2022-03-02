@@ -5,7 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
 
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 
 import moment from 'moment'
 
@@ -16,8 +16,9 @@ const Post = ({post, setCurrentId}) => {
     const dispatch = useDispatch();
     const classes = useStyles();
 
-    const user = JSON.parse(localStorage.getItem('profile'));
-
+    const user = useSelector((state) => state.auth.authData);
+    // const author = useSelector((state) => state.auth.authData) 
+    // console.log(author);
     const Likes = () => {
       if (post.likes?.length > 0) {
         return post.likes.find((like) => like === (user?.result?.googleId || user?.result?._id))
