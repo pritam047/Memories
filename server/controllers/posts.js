@@ -12,6 +12,28 @@ export const getPosts = async(req, res) =>{
     }
 }
 
+// GET Posts by search params and tags
+export const getPostsBySearch = async(req, res) =>{
+    const { searchQuery, tags} = req.query;
+    // console.log("fsgsg = ",req.query);
+    try {
+        const title = new RegExp(searchQuery, 'i');
+        const posts = await PostMessage.find({$or: [ { title }, { tags : { $in : tags.split(',') } } ]}
+        // function (err,res) {
+        //     if (err) {
+        //         console.log(err);
+        //       } else {
+        //         console.log("fgdf", res);
+        //       }
+        // }
+        )
+                
+        res.json({data: posts});
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
 // CREATE Posts
 export const createPost = async(req, res) =>{
     const post = req.body;
