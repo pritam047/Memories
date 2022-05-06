@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Container, Grow, Grid, AppBar, TextField, Button, Paper, Chip } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { getPosts, getPostsBySearch } from '../../actions/posts'
+import { getPostsBySearch } from '../../actions/posts'
 import Posts from '../Posts/Posts';
 import Form from '../Forms/Forms';
 import Pagination from '../Pagination';
