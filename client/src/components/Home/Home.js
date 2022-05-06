@@ -44,9 +44,9 @@ const Home = () => {
     // const handleAddChip = (tag) => setTags([...tags, tag]);
     const handleDeleteChip = (chipToDelete) => setTags(tags.filter((tag) => tag !== chipToDelete));
 
-    useEffect(() => {
-        dispatch(getPosts());
-    }, [currentId, dispatch])
+    // useEffect(() => {
+    //     dispatch(getPosts());
+    // }, [currentId, dispatch])
 
     return (
         <Grow in>
