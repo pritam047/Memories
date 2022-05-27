@@ -29,7 +29,7 @@ mongoose.connect(
     process.env.DB_URL, 
     {useNewUrlParser: true, useUnifiedTopology: true}
     )
-    .then(()=> app.listen(PORT, ()=> console.log(`Server running on port ${PORT}`)))
+    .then(()=> app.listen(PORT, ()=> console.log(`DB Connected & Server running on port ${PORT}`)))
     .catch((err)=> console.log(err.message))
 
 

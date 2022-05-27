@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { TextField, Button, Typography, Paper } from '@mui/material';
 import FileBase from 'react-file-base64';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { useNavigate } from 'react-router-dom';
 import useStyles from './styles';
 
 import { createPost, updatePost } from '../../actions/posts';
@@ -10,12 +10,12 @@ import { createPost, updatePost } from '../../actions/posts';
 const Form = ({currentId, setCurrentId}) => {
 
     const [postData, setPostData] = useState({ title: '', message: '', tags: '', selectedFile: '' });
-    const post = useSelector((state) => currentId ? state.posts.find((p) => p._id === currentId) : null);
-    const author = useSelector((state) => state.auth) 
+    const post = useSelector((state) => currentId ? state.posts.posts.find((p) => p._id === currentId) : null);
+    // const author = useSelector((state) => state.auth) 
 
     const classes = useStyles();
     const dispatch = useDispatch();
-    
+    const navigate = useNavigate();    
     const user = JSON.parse(localStorage.getItem('profile'))
     useEffect(() =>{
         if(post) setPostData(post);
@@ -29,7 +29,7 @@ const Form = ({currentId, setCurrentId}) => {
         e.preventDefault();
 
         if (currentId === 0) {
-            dispatch(createPost({ ...postData, name: user?.result?.name }));
+            dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
             clear();
           } else {
             dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
@@ -38,16 +38,16 @@ const Form = ({currentId, setCurrentId}) => {
     }
     const hasFormValues = postData.title || postData.message || postData.tags || postData.selectedFile ? true : false;
     const isEnabled = (postData.title && postData.message) ? true:false;
-    if (!author.loggedIn) {
+    if (!user?.result?.name) {
         return (
-          <Paper className={classes.paper}>
+          <Paper className={classes.paper} elevation={6}>
             <Typography variant="h6" align="center">
               Please Sign In to create your own memories and like other's memories.
             </Typography>
           </Paper>
         );
       }
-    else{  
+      
     return (
         <Paper className={classes.paper} elevation={6}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
@@ -75,7 +75,6 @@ const Form = ({currentId, setCurrentId}) => {
             </form>
         </Paper>
     )
-    }
 }
 
 export default Form;

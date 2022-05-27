@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ThumbUpAltOutlined from '@mui/icons-material/ThumbUpAltOutlined';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import moment from 'moment'
@@ -18,7 +18,7 @@ const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  const user = useSelector((state) => state.auth.authData);
+  const user = JSON.parse(localStorage.getItem('profile'));
   // const author = useSelector((state) => state.auth.authData) 
   // console.log(author);
   const Likes = () => {
@@ -35,7 +35,7 @@ const Post = ({ post, setCurrentId }) => {
   };
 
   const openPost = () => {
-      navigate(`/posts/${post._id}`)
+    navigate(`/posts/${post._id}`)
   }
 
   return (
@@ -48,9 +48,14 @@ const Post = ({ post, setCurrentId }) => {
         </div>
         {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) &&
           (
-            <div className={classes.overlay2}>
-              <Button style={{ color: 'white' }} size="small"
-                onClick={() => setCurrentId(post._id)}><MoreHorizIcon fontSize="medium" /></Button>
+            <div className={classes.overlay2} name="edit">
+              <Button 
+                style={{ color: 'white' }}
+                size="small"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentId(post._id);
+                }}><MoreHorizIcon fontSize="medium" /></Button>
             </div>
           )}
         <div className={classes.details}>

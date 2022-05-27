@@ -1,6 +1,6 @@
 import axios from  'axios';
 
-const API = axios.create({ baseURL: 'http://localhost:5000' }); // server url
+const API = axios.create({ baseURL: 'https://moments-server21.herokuapp.com' }); // server url
 
 API.interceptors.request.use((req) => {
     if (localStorage.getItem('profile')) {

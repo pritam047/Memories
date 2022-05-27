@@ -19,7 +19,7 @@ export const getPosts = async(req, res) =>{
 
     const { page } = req.query;
     try {
-        const LIMIT = 9;
+        const LIMIT = 6;
         const startIndex = (Number(page) - 1) * LIMIT; // get starting INDEX of every page
         const total = await PostMessage.countDocuments({});
 
@@ -38,7 +38,7 @@ export const getPostsBySearch = async(req, res) =>{
     try {
         const title = new RegExp(searchQuery, 'i');
         const posts = await PostMessage.find({$or: [ { title }, { tags : { $in : tags.split(',') } } ]}
-        // function (err,res) {
+        // ,function (err,res) {
         //     if (err) {
         //         console.log(err);
         //       } else {
